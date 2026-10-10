@@ -4,7 +4,7 @@
   "slug": "command-line",
   "name": "Command line",
   "summary": "Open database URLs and SQL files in TablePro from Terminal with the tablepro command.",
-  "description": "The tablepro command opens a connection URL, a database file or a SQL file in TablePro from Terminal or a script. tablepro \"postgresql://user@127.0.0.1:5432/app\" opens that database, and tablepro schema.sql opens the file in a query tab.\n\nA URL that matches a saved connection uses it. Any other URL opens a temporary session that is not saved. Scripts can also run open -b com.TablePro with the same URL.",
+  "description": "The tablepro command opens a connection URL, a database file or a SQL file in TablePro. A SQL file opens in a query tab.\n\nA URL that matches a saved connection uses it. Any other URL opens a temporary session that is not saved. Scripts can also run open -b com.TablePro with the same URL.",
   "tier": "official",
   "status": {
     "state": "active"

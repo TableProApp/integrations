@@ -4,7 +4,7 @@
   "slug": "claude-code",
   "name": "Claude Code",
   "summary": "Connect Claude Code to your databases through the MCP server built into TablePro.",
-  "description": "Claude Code runs tablepro-mcp, a bridge that ships inside TablePro, as a local MCP server. Through it Claude Code can list your connections, read schemas, run queries, and change data and schema.\n\nSetup is one claude mcp add command.",
+  "description": "Claude Code runs the bundled tablepro-mcp bridge as a local MCP server. Setup is one claude mcp add command.",
   "tier": "official",
   "status": {
     "state": "active"
@@ -56,7 +56,7 @@
     "accessNote": "Uses the Read & Write token of the bundled bridge. Each connection's External Clients level and Safe Mode still apply.",
     "lowersSafeMode": false,
     "network": "internet",
-    "networkNote": "Claude Code sends query results to the model provider it is set up with.",
+    "networkNote": "Claude Code sends query results to its model provider.",
     "account": false,
     "payment": "free"
   },
