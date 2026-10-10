@@ -59,7 +59,7 @@
       }
     },
     "partners": {
-      "description": "curation/partners.json: vendors verified for tier partner, one row per entry.",
+      "description": "curation/partners.json: vendors confirmed for tier partner, one row per entry.",
       "type": "object",
       "additionalProperties": false,
       "required": ["$schema", "partners"],
