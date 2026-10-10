@@ -1,0 +1,74 @@
+{
+  "$schema": "../../schema/integration.schema.json",
+  "schemaVersion": 1,
+  "slug": "shortcuts",
+  "name": "Shortcuts",
+  "summary": "Add rows to a table and open a connection from Shortcuts on iPhone and iPad.",
+  "description": "The TablePro app for iPhone and iPad adds three actions to Shortcuts, Siri and the Share Sheet: Add Row to Table, Add Rows to Table and Open Connection.\n\nThe two insert actions take JSON or CSV, insert up to 10,000 rows per run, and run in the background without opening the app.",
+  "tier": "official",
+  "status": {
+    "state": "active"
+  },
+  "publisher": {
+    "name": "TablePro",
+    "github": "TableProApp",
+    "githubId": 260450047,
+    "url": "https://tablepro.app"
+  },
+  "source": {
+    "type": "github",
+    "repo": "TableProApp/TablePro",
+    "repoId": 1117891044,
+    "path": "TableProMobile/TableProMobile/Intents"
+  },
+  "license": "AGPL-3.0-only",
+  "install": {
+    "type": "built-in",
+    "docs": "https://docs.tablepro.app/integrations/ios-shortcuts"
+  },
+  "host": {
+    "name": "Shortcuts",
+    "url": "https://support.apple.com/guide/shortcuts/welcome/ios"
+  },
+  "minTableProVersion": {
+    "ios": "1.0",
+    "ipados": "1.0"
+  },
+  "platforms": [
+    "ios",
+    "ipados"
+  ],
+  "categories": [
+    "automation"
+  ],
+  "surfaces": [
+    "shortcuts"
+  ],
+  "disclosures": {
+    "reads": [
+      "connections",
+      "schema"
+    ],
+    "writes": [
+      "data"
+    ],
+    "lowersSafeMode": false,
+    "network": "none",
+    "account": false,
+    "payment": "free"
+  },
+  "links": {
+    "homepage": "https://docs.tablepro.app/integrations/ios-shortcuts",
+    "issues": "https://github.com/TableProApp/TablePro/issues"
+  },
+  "icon": "icon.png",
+  "keywords": [
+    "ios",
+    "ipad",
+    "siri",
+    "app intents",
+    "automation"
+  ],
+  "addedAt": "2026-10-10",
+  "lastVerifiedAt": "2026-10-10"
+}

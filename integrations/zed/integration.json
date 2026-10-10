@@ -1,0 +1,77 @@
+{
+  "$schema": "../../schema/integration.schema.json",
+  "schemaVersion": 1,
+  "slug": "zed",
+  "name": "Zed",
+  "summary": "Connect Zed's agent to your databases through the MCP server built into TablePro.",
+  "description": "Zed runs tablepro-mcp, a bridge that ships inside TablePro, as a context server. Through it Zed's agent can list your connections, read schemas, run queries, and change data and schema.\n\nSetup is one entry under context_servers in Zed's settings file.",
+  "tier": "official",
+  "status": {
+    "state": "active"
+  },
+  "publisher": {
+    "name": "TablePro",
+    "github": "TableProApp",
+    "githubId": 260450047,
+    "url": "https://tablepro.app"
+  },
+  "source": {
+    "type": "github",
+    "repo": "TableProApp/TablePro",
+    "repoId": 1117891044,
+    "path": "TablePro/Core/MCP"
+  },
+  "license": "AGPL-3.0-only",
+  "install": {
+    "type": "built-in",
+    "docs": "https://docs.tablepro.app/integrations/mcp-clients#zed"
+  },
+  "host": {
+    "name": "Zed",
+    "url": "https://zed.dev"
+  },
+  "minTableProVersion": {
+    "macos": "0.37.0"
+  },
+  "platforms": [
+    "macos"
+  ],
+  "categories": [
+    "ai-clients",
+    "editors"
+  ],
+  "surfaces": [
+    "mcp"
+  ],
+  "disclosures": {
+    "reads": [
+      "connections",
+      "schema",
+      "data"
+    ],
+    "writes": [
+      "data",
+      "schema"
+    ],
+    "accessNote": "Uses the Read & Write token of the bundled bridge. Each connection's External Clients level and Safe Mode still apply.",
+    "lowersSafeMode": false,
+    "network": "internet",
+    "networkNote": "Zed sends query results to the language model provider you set up.",
+    "account": false,
+    "payment": "free"
+  },
+  "links": {
+    "homepage": "https://docs.tablepro.app/integrations/mcp-clients#zed",
+    "docs": "https://docs.tablepro.app/developers/mcp-tools",
+    "issues": "https://github.com/TableProApp/TablePro/issues"
+  },
+  "icon": "icon.png",
+  "keywords": [
+    "mcp",
+    "agent",
+    "editor",
+    "ai"
+  ],
+  "addedAt": "2026-10-10",
+  "lastVerifiedAt": "2026-10-10"
+}
