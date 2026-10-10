@@ -29,6 +29,7 @@ jobs:
             const files = await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number: pr.number, per_page: 100 });
             const labels = new Set();
             const slugs = new Map();
+            const assetSlugs = new Set();
             for (const file of files) {
               const entry = /^integrations\/([a-z0-9-]{1,40})\/(.+)$/.exec(file.filename);
               if (entry) {
@@ -36,13 +37,16 @@ jobs:
                   slugs.set(entry[1], file.status);
                   labels.add(file.status === 'added' ? 'new integration' : file.status === 'removed' ? 'removal' : 'update');
                 } else {
-                  labels.add('update');
+                  assetSlugs.add(entry[1]);
                 }
               } else if (file.filename.startsWith('curation/')) {
                 labels.add('curation');
               } else {
                 labels.add('tooling');
               }
+            }
+            for (const slug of assetSlugs) {
+              if (!['added', 'removed'].includes(slugs.get(slug))) labels.add('update');
             }
             async function readJson(repoOwner, repoName, ref, path) {
               try {
