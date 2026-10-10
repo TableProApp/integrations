@@ -55,7 +55,7 @@
     "accessNote": "Uses the Read & Write token of the bundled bridge. Each connection's External Clients level and Safe Mode still apply.",
     "lowersSafeMode": false,
     "network": "internet",
-    "networkNote": "Claude Desktop sends query results to Anthropic.",
+    "networkNote": "Claude Desktop sends tool results, such as connection names, schemas and rows, to Anthropic.",
     "account": false,
     "payment": "free"
   },

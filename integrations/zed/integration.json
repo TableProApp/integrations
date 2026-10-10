@@ -56,7 +56,7 @@
     "accessNote": "Uses the Read & Write token of the bundled bridge. Each connection's External Clients level and Safe Mode still apply.",
     "lowersSafeMode": false,
     "network": "internet",
-    "networkNote": "Zed sends query results to its model provider.",
+    "networkNote": "Zed sends tool results, such as connection names, schemas and rows, to its model provider.",
     "account": false,
     "payment": "free"
   },
