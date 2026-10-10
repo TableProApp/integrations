@@ -4,7 +4,7 @@
   "slug": "shortcuts",
   "name": "Shortcuts",
   "summary": "Add rows to a table and open a connection from Shortcuts on iPhone and iPad.",
-  "description": "The TablePro app for iPhone and iPad adds three actions to Shortcuts, Siri and the Share Sheet: Add Row to Table, Add Rows to Table and Open Connection.\n\nThe two insert actions take JSON or CSV, insert up to 10,000 rows per run, and run in the background without opening the app.",
+  "description": "TablePro for iPhone and iPad adds three actions to Shortcuts, Siri and the Share Sheet: Add Row to Table, Add Rows to Table and Open Connection.\n\nThe two insert actions take JSON or CSV and insert up to 10,000 rows per run. They run without opening the app.",
   "tier": "official",
   "status": {
     "state": "active"

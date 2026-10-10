@@ -4,7 +4,7 @@
   "slug": "zed",
   "name": "Zed",
   "summary": "Connect Zed's agent to your databases through the MCP server built into TablePro.",
-  "description": "Zed runs tablepro-mcp, a bridge that ships inside TablePro, as a context server. Through it Zed's agent can list your connections, read schemas, run queries, and change data and schema.\n\nSetup is one entry under context_servers in Zed's settings file.",
+  "description": "Zed runs the bundled tablepro-mcp bridge as a local MCP server. Setup is one entry under context_servers in Zed's settings file.",
   "tier": "official",
   "status": {
     "state": "active"
@@ -56,7 +56,7 @@
     "accessNote": "Uses the Read & Write token of the bundled bridge. Each connection's External Clients level and Safe Mode still apply.",
     "lowersSafeMode": false,
     "network": "internet",
-    "networkNote": "Zed sends query results to the language model provider you set up.",
+    "networkNote": "Zed sends query results to its model provider.",
     "account": false,
     "payment": "free"
   },

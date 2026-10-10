@@ -4,7 +4,7 @@
   "slug": "claude-desktop",
   "name": "Claude Desktop",
   "summary": "Connect Claude Desktop to your databases through the MCP server built into TablePro.",
-  "description": "Claude Desktop runs tablepro-mcp, a bridge that ships inside TablePro, as a local MCP server. Through it Claude can list your connections, read schemas, run queries, and change data and schema.\n\nSetup is one entry in Claude Desktop's MCP config file.",
+  "description": "Claude Desktop runs the bundled tablepro-mcp bridge as a local MCP server. Setup is one entry in Claude Desktop's MCP config file.",
   "tier": "official",
   "status": {
     "state": "active"
@@ -55,7 +55,7 @@
     "accessNote": "Uses the Read & Write token of the bundled bridge. Each connection's External Clients level and Safe Mode still apply.",
     "lowersSafeMode": false,
     "network": "internet",
-    "networkNote": "Claude Desktop sends query results to Anthropic to answer you.",
+    "networkNote": "Claude Desktop sends query results to Anthropic.",
     "account": false,
     "payment": "free"
   },
