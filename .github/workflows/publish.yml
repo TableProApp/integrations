@@ -1,0 +1,105 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    outputs:
+      changed: ${{ steps.build.outputs.changed }}
+      tag: ${{ steps.build.outputs.tag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.14"
+      - run: python -m pip install --require-hashes -r requirements.txt
+      - name: Build and compare with the latest release
+        id: build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="v1.$(date -u +%Y%m%d).${GITHUB_RUN_NUMBER}"
+          python scripts/build.py --out build/dist --release "$tag"
+          latest=$(gh release list --repo "$GITHUB_REPOSITORY" --json tagName,isLatest --jq '.[] | select(.isLatest) | .tagName')
+          previous=""
+          if [ -n "$latest" ]; then
+            gh release download "$latest" --repo "$GITHUB_REPOSITORY" --pattern index.json --pattern SHA256SUMS --dir "$RUNNER_TEMP/latest"
+            previous=$(jq -r .contentSha256 "$RUNNER_TEMP/latest/index.json")
+          fi
+          if [ "$(jq -r .contentSha256 build/dist/index.json)" = "$previous" ]; then
+            # Same data, so Pages keeps serving the files of the latest release.
+            cp "$RUNNER_TEMP/latest/index.json" "$RUNNER_TEMP/latest/SHA256SUMS" build/dist/
+            (cd build/dist && sha256sum --check --strict --quiet SHA256SUMS)
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No data change since $latest, so no release was made." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          fi
+          mkdir -p build/site/v1 build/site/schema/v1
+          cp build/dist/* build/site/v1/
+          cp schema/*.json build/site/schema/v1/
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: steps.build.outputs.changed == 'true'
+        with:
+          name: release
+          path: build/dist/
+          if-no-files-found: error
+          retention-days: 7
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: build/site/
+
+  release:
+    name: Release
+    needs: build
+    if: needs.build.outputs.changed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release
+          path: ${{ runner.temp }}/release
+      - name: Create the immutable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.build.outputs.tag }}
+          ASSETS: ${{ runner.temp }}/release
+        run: |
+          (cd "$ASSETS" && sha256sum --check --strict --quiet SHA256SUMS)
+          gh release create "$TAG" "$ASSETS"/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "$TAG" --notes "Registry data built from ${GITHUB_SHA}." --latest
+
+  pages:
+    name: Pages
+    needs: [build, release]
+    if: ${{ !cancelled() && needs.build.result == 'success' && needs.release.result != 'failure' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
