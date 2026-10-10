@@ -56,7 +56,7 @@
     "accessNote": "Uses the Read & Write token of the bundled bridge. Each connection's External Clients level and Safe Mode still apply.",
     "lowersSafeMode": false,
     "network": "internet",
-    "networkNote": "Cursor sends query results to its model provider.",
+    "networkNote": "Cursor sends tool results, such as connection names, schemas and rows, to Cursor's servers and its model provider.",
     "account": false,
     "payment": "free"
   },
