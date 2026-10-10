@@ -1,0 +1,78 @@
+{
+  "$schema": "../../schema/integration.schema.json",
+  "schemaVersion": 1,
+  "slug": "raycast",
+  "name": "Raycast",
+  "summary": "Search connections, tables and query history, and run queries from Raycast.",
+  "description": "The TablePro extension for Raycast lists your saved connections, opens one in TablePro, searches schemas and tables, shows recent tabs and query history, and runs SQL through the TablePro app.\n\nRun Pair with TablePro once. You choose the token's scope when you pair: Read-only, Read & write, or Full access. The extension's AI tools let Raycast AI list connections, describe tables and run queries with the same token.",
+  "tier": "official",
+  "status": {
+    "state": "active"
+  },
+  "publisher": {
+    "name": "TablePro",
+    "github": "TableProApp",
+    "githubId": 260450047,
+    "url": "https://tablepro.app"
+  },
+  "source": {
+    "type": "github",
+    "repo": "raycast/extensions",
+    "repoId": 408858330,
+    "path": "extensions/tablepro"
+  },
+  "license": "MIT",
+  "install": {
+    "type": "raycast-store",
+    "url": "https://www.raycast.com/ngoquocdat/tablepro"
+  },
+  "host": {
+    "name": "Raycast",
+    "url": "https://www.raycast.com",
+    "note": "The AI tools need Raycast AI."
+  },
+  "platforms": [
+    "macos"
+  ],
+  "categories": [
+    "launchers",
+    "ai-clients"
+  ],
+  "surfaces": [
+    "url-scheme",
+    "mcp",
+    "pairing"
+  ],
+  "disclosures": {
+    "reads": [
+      "connections",
+      "schema",
+      "data"
+    ],
+    "writes": [
+      "data",
+      "schema"
+    ],
+    "accessNote": "Writes need a Read & write or Full access token, chosen when you pair.",
+    "lowersSafeMode": false,
+    "network": "internet",
+    "networkNote": "The AI tools send query results to Raycast AI when you use them in a Raycast AI chat.",
+    "account": false,
+    "payment": "free"
+  },
+  "links": {
+    "homepage": "https://www.raycast.com/ngoquocdat/tablepro",
+    "docs": "https://docs.tablepro.app/integrations/raycast",
+    "issues": "https://github.com/raycast/extensions/issues",
+    "changelog": "https://github.com/raycast/extensions/blob/main/extensions/tablepro/CHANGELOG.md"
+  },
+  "icon": "icon.png",
+  "keywords": [
+    "launcher",
+    "mcp",
+    "sql",
+    "raycast ai"
+  ],
+  "addedAt": "2026-10-10",
+  "lastVerifiedAt": "2026-10-10"
+}

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem in a listed integration
+    url: https://github.com/TableProApp/integrations/security/advisories/new
+    about: Malware, credential theft or a vulnerability. Reported privately.
+  - name: A bug in TablePro itself
+    url: https://github.com/TableProApp/TablePro/issues/new/choose
+    about: This repository lists integrations. TablePro bugs go to the app repository.
+  - name: A bug in an integration
+    url: https://github.com/TableProApp/integrations/tree/main/integrations
+    about: Open the entry and use the issue tracker in its links. The integration's author fixes it, not TablePro.

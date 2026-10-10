@@ -1,0 +1,571 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://integrations.tablepro.app/schema/v1/integration.schema.json",
+  "title": "TablePro integration manifest",
+  "description": "One integration in the TablePro directory. File: integrations/<slug>/integration.json. Text is English and plain: no HTML, no Markdown.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "slug",
+    "name",
+    "summary",
+    "description",
+    "tier",
+    "status",
+    "publisher",
+    "source",
+    "install",
+    "platforms",
+    "categories",
+    "surfaces",
+    "disclosures",
+    "links",
+    "icon",
+    "addedAt",
+    "lastVerifiedAt"
+  ],
+  "properties": {
+    "$schema": { "const": "../../schema/integration.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "slug": {
+      "description": "Folder name and URL path segment. Never changes after the first merge.",
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 40,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "name": {
+      "description": "Shown as the entry title. Third-party entries do not include TablePro. At most 32 characters, so a page title stays within 60.",
+      "allOf": [{ "$ref": "#/$defs/plainLine" }],
+      "minLength": 2,
+      "maxLength": 32
+    },
+    "summary": {
+      "description": "One sentence for the card. Ends with a period.",
+      "allOf": [{ "$ref": "#/$defs/plainLine" }],
+      "minLength": 20,
+      "maxLength": 120,
+      "pattern": "[^.]\\.$"
+    },
+    "description": {
+      "description": "Plain text for the detail page. Paragraphs are separated by one blank line.",
+      "allOf": [{ "$ref": "#/$defs/plainText" }],
+      "minLength": 80,
+      "maxLength": 1200
+    },
+    "tier": {
+      "description": "official: built by TablePro. partner: built by the vendor of the other product, listed in curation/partners.json. community: everyone else.",
+      "enum": ["official", "partner", "community"]
+    },
+    "status": {
+      "type": "object",
+      "required": ["state"],
+      "properties": { "state": { "enum": ["active", "archived"] } },
+      "allOf": [
+        {
+          "if": { "properties": { "state": { "const": "active" } } },
+          "then": { "$ref": "#/$defs/statusActive" }
+        },
+        {
+          "if": { "properties": { "state": { "const": "archived" } } },
+          "then": { "$ref": "#/$defs/statusArchived" }
+        }
+      ]
+    },
+    "publisher": {
+      "description": "Shown as By <name>. The GitHub account is how ownership is checked.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "github", "githubId"],
+      "properties": {
+        "name": { "allOf": [{ "$ref": "#/$defs/plainLine" }], "minLength": 1, "maxLength": 60 },
+        "github": { "$ref": "#/$defs/githubLogin" },
+        "githubId": { "type": "integer", "minimum": 1 },
+        "url": { "$ref": "#/$defs/httpsUrl" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": ["type"],
+      "properties": { "type": { "enum": ["github", "closed"] } },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "github" } } },
+          "then": { "$ref": "#/$defs/sourceGitHub" }
+        },
+        {
+          "if": { "properties": { "type": { "const": "closed" } } },
+          "then": { "$ref": "#/$defs/sourceClosed" }
+        }
+      ]
+    },
+    "license": {
+      "description": "SPDX license expression. Required for open source, absent for closed source.",
+      "type": "string",
+      "maxLength": 80,
+      "pattern": "^[A-Za-z0-9.+-]+(?: (?:AND|OR|WITH) [A-Za-z0-9.+-]+)*$"
+    },
+    "install": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "enum": [
+            "built-in",
+            "ships-with-host",
+            "raycast-store",
+            "vscode-marketplace",
+            "github-release",
+            "homebrew",
+            "app-store",
+            "alfred-gallery",
+            "page"
+          ]
+        }
+      },
+      "allOf": [
+        { "if": { "properties": { "type": { "const": "built-in" } } }, "then": { "$ref": "#/$defs/installBuiltIn" } },
+        { "if": { "properties": { "type": { "const": "ships-with-host" } } }, "then": { "$ref": "#/$defs/installShipsWithHost" } },
+        { "if": { "properties": { "type": { "const": "raycast-store" } } }, "then": { "$ref": "#/$defs/installRaycastStore" } },
+        { "if": { "properties": { "type": { "const": "vscode-marketplace" } } }, "then": { "$ref": "#/$defs/installVSCodeMarketplace" } },
+        { "if": { "properties": { "type": { "const": "github-release" } } }, "then": { "$ref": "#/$defs/installGitHubRelease" } },
+        { "if": { "properties": { "type": { "const": "homebrew" } } }, "then": { "$ref": "#/$defs/installHomebrew" } },
+        { "if": { "properties": { "type": { "const": "app-store" } } }, "then": { "$ref": "#/$defs/installAppStore" } },
+        { "if": { "properties": { "type": { "const": "alfred-gallery" } } }, "then": { "$ref": "#/$defs/installAlfredGallery" } },
+        { "if": { "properties": { "type": { "const": "page" } } }, "then": { "$ref": "#/$defs/installPage" } }
+      ]
+    },
+    "host": {
+      "description": "The other product this integration lives in or connects to.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "allOf": [{ "$ref": "#/$defs/plainLine" }], "minLength": 1, "maxLength": 40 },
+        "url": { "$ref": "#/$defs/httpsUrl" },
+        "minVersion": { "$ref": "#/$defs/version" },
+        "note": {
+          "description": "A paid tier or add-on the host needs, for example Alfred Powerpack.",
+          "allOf": [{ "$ref": "#/$defs/plainLine" }],
+          "maxLength": 120
+        }
+      }
+    },
+    "minTableProVersion": {
+      "description": "Oldest TablePro release this works with, per platform. Keys must be in platforms.",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "macos": { "$ref": "#/$defs/version" },
+        "ios": { "$ref": "#/$defs/version" },
+        "ipados": { "$ref": "#/$defs/version" }
+      }
+    },
+    "platforms": {
+      "description": "TablePro apps this works with, not the host's platforms.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["macos", "ios", "ipados"] }
+    },
+    "categories": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "ai-clients",
+          "automation",
+          "cloud-hosting",
+          "command-line",
+          "editors",
+          "launchers",
+          "local-development",
+          "other"
+        ]
+      }
+    },
+    "surfaces": {
+      "description": "Documented TablePro interfaces the integration uses.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": ["url-scheme", "mcp", "pairing", "applescript", "database-url", "cli", "shortcuts"]
+      }
+    },
+    "disclosures": { "$ref": "#/$defs/disclosures" },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["homepage"],
+      "anyOf": [{ "required": ["issues"] }, { "required": ["support"] }],
+      "properties": {
+        "homepage": { "$ref": "#/$defs/httpsUrl" },
+        "docs": { "$ref": "#/$defs/httpsUrl" },
+        "issues": { "$ref": "#/$defs/httpsUrl" },
+        "support": { "$ref": "#/$defs/httpsUrl" },
+        "privacy": { "$ref": "#/$defs/httpsUrl" },
+        "changelog": { "$ref": "#/$defs/httpsUrl" }
+      }
+    },
+    "icon": {
+      "description": "PNG, exactly 512x512, at most 512 KB, in the entry folder.",
+      "const": "icon.png"
+    },
+    "screenshots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "alt"],
+        "properties": {
+          "file": { "type": "string", "pattern": "^screenshot-[1-4]\\.png$" },
+          "alt": { "allOf": [{ "$ref": "#/$defs/plainLine" }], "minLength": 10, "maxLength": 200 }
+        }
+      }
+    },
+    "keywords": {
+      "type": "array",
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9 .+-]{0,23}$" }
+    },
+    "addedAt": {
+      "description": "Date of the first merge. Never changes.",
+      "$ref": "#/$defs/date"
+    },
+    "lastVerifiedAt": {
+      "description": "Date a maintainer last confirmed it works with the current TablePro release.",
+      "$ref": "#/$defs/date"
+    },
+    "compliance": {
+      "description": "Pre-policy entries only. Set by a maintainer.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["grace"],
+      "properties": { "grace": { "$ref": "#/$defs/grace" } }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "source": { "properties": { "type": { "const": "github" } } } } },
+      "then": { "required": ["license"] },
+      "else": { "not": { "required": ["license"] } }
+    },
+    {
+      "if": { "properties": { "install": { "properties": { "type": { "const": "built-in" } } } } },
+      "then": { "properties": { "tier": { "const": "official" } } }
+    },
+    {
+      "if": { "properties": { "disclosures": { "properties": { "account": { "const": true } } } } },
+      "then": { "properties": { "links": { "required": ["privacy"] } } }
+    },
+    {
+      "if": {
+        "properties": { "disclosures": { "properties": { "lowersSafeMode": { "const": true } } } }
+      },
+      "then": {
+        "properties": {
+          "categories": { "contains": { "const": "local-development" } }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "plainLine": {
+      "type": "string",
+      "pattern": "^(?=\\S)(?!.*\\s$)[^\\u0000-\\u001F\\u007F<>\\u200B-\\u200F\\u202A-\\u202E\\u2060-\\u2069\\uFEFF]+$"
+    },
+    "plainText": {
+      "type": "string",
+      "pattern": "^(?=\\S)(?![\\s\\S]*\\s$)(?![\\s\\S]*\\n{3})[^\\u0000-\\u0009\\u000B-\\u001F\\u007F<>\\u200B-\\u200F\\u202A-\\u202E\\u2060-\\u2069\\uFEFF]+$"
+    },
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 300,
+      "pattern": "^https://(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\\.)+[A-Za-z]{2,63}(?:[/?#][^\\s<>\"'\\\\]*)?$"
+    },
+    "githubLogin": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$"
+    },
+    "githubRepo": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}/(?!\\.{1,2}$)[A-Za-z0-9._-]{1,100}$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^20[2-9][0-9]-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:\\.(?:0|[1-9][0-9]*))?$"
+    },
+    "statusActive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state"],
+      "properties": { "state": { "const": "active" } }
+    },
+    "statusArchived": {
+      "description": "Archived entries leave the hub and search. The detail page stays with a banner.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "since", "reason"],
+      "properties": {
+        "state": { "const": "archived" },
+        "since": { "$ref": "#/$defs/date" },
+        "reason": {
+          "enum": [
+            "unmaintained",
+            "broken",
+            "source-archived",
+            "superseded",
+            "author-request",
+            "policy"
+          ]
+        },
+        "replacement": {
+          "description": "Slug of the entry that replaces this one.",
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "note": { "allOf": [{ "$ref": "#/$defs/plainLine" }], "maxLength": 200 },
+        "link": { "$ref": "#/$defs/httpsUrl" }
+      },
+      "if": { "properties": { "reason": { "const": "superseded" } } },
+      "then": { "required": ["replacement"] }
+    },
+    "sourceGitHub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "repo", "repoId"],
+      "properties": {
+        "type": { "const": "github" },
+        "repo": { "$ref": "#/$defs/githubRepo" },
+        "repoId": {
+          "description": "Numeric repository id. Survives renames and catches a repo re-created under the same name.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "path": {
+          "description": "Folder inside a monorepo.",
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^(?!.*(?:^|/)\\.{1,2}(?:/|$))[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$"
+        }
+      }
+    },
+    "sourceClosed": {
+      "description": "Source is not public, or most of it is not. The directory shows a Closed source label.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "const": "closed" },
+        "note": { "allOf": [{ "$ref": "#/$defs/plainLine" }], "maxLength": 200 }
+      }
+    },
+    "installBuiltIn": {
+      "description": "Part of TablePro. The button opens the TablePro docs page.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "docs"],
+      "properties": {
+        "type": { "const": "built-in" },
+        "docs": {
+          "allOf": [{ "$ref": "#/$defs/httpsUrl" }],
+          "pattern": "^https://docs\\.tablepro\\.app/"
+        }
+      }
+    },
+    "installShipsWithHost": {
+      "description": "Included in the host product. The button opens the host's docs for it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url"],
+      "properties": {
+        "type": { "const": "ships-with-host" },
+        "url": { "$ref": "#/$defs/httpsUrl" }
+      }
+    },
+    "installRaycastStore": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url"],
+      "properties": {
+        "type": { "const": "raycast-store" },
+        "url": {
+          "type": "string",
+          "pattern": "^https://www\\.raycast\\.com/[A-Za-z0-9_-]{1,64}/[a-z0-9-]{1,64}$"
+        }
+      }
+    },
+    "installVSCodeMarketplace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "const": "vscode-marketplace" },
+        "id": {
+          "description": "publisher.name, as in the Marketplace itemName.",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,62}\\.[A-Za-z0-9][A-Za-z0-9-]{0,62}$"
+        },
+        "openVsx": {
+          "description": "Also published on Open VSX under the same id.",
+          "type": "boolean"
+        }
+      }
+    },
+    "installGitHubRelease": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url"],
+      "properties": {
+        "type": { "const": "github-release" },
+        "url": {
+          "type": "string",
+          "pattern": "^https://github\\.com/[A-Za-z0-9-]{1,39}/[A-Za-z0-9._-]{1,100}/releases/latest$"
+        }
+      }
+    },
+    "installHomebrew": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "kind", "token"],
+      "properties": {
+        "type": { "const": "homebrew" },
+        "kind": { "enum": ["formula", "cask"] },
+        "token": {
+          "description": "Name in homebrew/core or homebrew/cask. Third-party taps are not accepted.",
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9@+._-]{0,99}$"
+        }
+      }
+    },
+    "installAppStore": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url"],
+      "properties": {
+        "type": { "const": "app-store" },
+        "url": {
+          "type": "string",
+          "pattern": "^https://apps\\.apple\\.com/(?:[a-z]{2}/)?app/(?:[a-z0-9-]+/)?id[0-9]{5,12}$"
+        }
+      }
+    },
+    "installAlfredGallery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url"],
+      "properties": {
+        "type": { "const": "alfred-gallery" },
+        "url": {
+          "type": "string",
+          "pattern": "^https://alfred\\.app/workflows/[a-z0-9-]{1,64}/[a-z0-9-]{1,64}/$"
+        }
+      }
+    },
+    "installPage": {
+      "description": "Fallback for a download page with no typed store. Needs maintainer approval.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url"],
+      "properties": {
+        "type": { "const": "page" },
+        "url": { "$ref": "#/$defs/httpsUrl" }
+      }
+    },
+    "disclosures": {
+      "description": "Shown under Uses on the detail page.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reads", "writes", "lowersSafeMode", "network", "account", "payment"],
+      "properties": {
+        "reads": {
+          "description": "What it reads from TablePro: the connection list, schema, or row data.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["connections", "schema", "data"] }
+        },
+        "writes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["data", "schema"] }
+        },
+        "accessNote": {
+          "description": "What limits the access, for example the token scope chosen when pairing.",
+          "allOf": [{ "$ref": "#/$defs/plainLine" }],
+          "maxLength": 200
+        },
+        "lowersSafeMode": {
+          "description": "Opens connections with a Safe Mode level below the user's default, for example safeModeLevel=0.",
+          "type": "boolean"
+        },
+        "safeModeNote": { "allOf": [{ "$ref": "#/$defs/plainLine" }], "maxLength": 200 },
+        "network": {
+          "description": "Where the integration itself sends data, besides TablePro and the user's databases. local means this Mac only.",
+          "enum": ["none", "local", "internet"]
+        },
+        "networkNote": { "allOf": [{ "$ref": "#/$defs/plainLine" }], "maxLength": 200 },
+        "account": {
+          "description": "Needs an account with a service other than TablePro and the host.",
+          "type": "boolean"
+        },
+        "payment": {
+          "description": "What the integration itself costs. The host's own pricing goes in host.note.",
+          "enum": ["free", "optional", "paid"]
+        },
+        "paymentNote": { "allOf": [{ "$ref": "#/$defs/plainLine" }], "maxLength": 200 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "lowersSafeMode": { "const": true } } },
+          "then": { "required": ["safeModeNote"] }
+        },
+        {
+          "if": { "properties": { "network": { "const": "internet" } } },
+          "then": { "required": ["networkNote"] }
+        },
+        {
+          "if": { "properties": { "payment": { "enum": ["optional", "paid"] } } },
+          "then": { "required": ["paymentNote"] }
+        }
+      ]
+    },
+    "grace": {
+      "description": "Time a pre-policy entry has to fix the listed problems. At most 60 days.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["startedAt", "endsAt", "items", "tracking"],
+      "properties": {
+        "startedAt": { "$ref": "#/$defs/date" },
+        "endsAt": { "$ref": "#/$defs/date" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["brand-name", "brand-icon", "license", "private-files", "disclosure"]
+          }
+        },
+        "tracking": {
+          "description": "Issue in the integration's own tracker where the author was contacted.",
+          "type": "string",
+          "pattern": "^https://github\\.com/[A-Za-z0-9-]{1,39}/[A-Za-z0-9._-]{1,100}/issues/[1-9][0-9]{0,6}$"
+        }
+      }
+    }
+  }
+}

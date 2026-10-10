@@ -1,0 +1,64 @@
+{
+  "$schema": "../../schema/integration.schema.json",
+  "schemaVersion": 1,
+  "slug": "command-line",
+  "name": "Command line",
+  "summary": "Open database URLs and SQL files in TablePro from Terminal with the tablepro command.",
+  "description": "Install the tablepro command from TablePro's settings, then pass it a connection URL or a file: tablepro \"postgresql://user@127.0.0.1:5432/app\" opens that database, and tablepro schema.sql opens the file in a query tab.\n\nTablePro reuses a saved connection that matches the URL. Otherwise the session is temporary and nothing is written to disk. Scripts that cannot install the command can run open -b com.TablePro with the same URL.",
+  "tier": "official",
+  "status": {
+    "state": "active"
+  },
+  "publisher": {
+    "name": "TablePro",
+    "github": "TableProApp",
+    "githubId": 260450047,
+    "url": "https://tablepro.app"
+  },
+  "source": {
+    "type": "github",
+    "repo": "TableProApp/TablePro",
+    "repoId": 1117891044,
+    "path": "TablePro/Core/Services/Infrastructure/CommandLineToolInstaller.swift"
+  },
+  "license": "AGPL-3.0-only",
+  "install": {
+    "type": "built-in",
+    "docs": "https://docs.tablepro.app/integrations/terminal"
+  },
+  "minTableProVersion": {
+    "macos": "0.57.0"
+  },
+  "platforms": [
+    "macos"
+  ],
+  "categories": [
+    "command-line"
+  ],
+  "surfaces": [
+    "cli",
+    "database-url"
+  ],
+  "disclosures": {
+    "reads": [],
+    "writes": [],
+    "lowersSafeMode": false,
+    "network": "none",
+    "account": false,
+    "payment": "free"
+  },
+  "links": {
+    "homepage": "https://docs.tablepro.app/integrations/terminal",
+    "docs": "https://docs.tablepro.app/connections/urls",
+    "issues": "https://github.com/TableProApp/TablePro/issues"
+  },
+  "icon": "icon.png",
+  "keywords": [
+    "terminal",
+    "shell",
+    "cli",
+    "database url"
+  ],
+  "addedAt": "2026-10-10",
+  "lastVerifiedAt": "2026-10-10"
+}

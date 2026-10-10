@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://integrations.tablepro.app/schema/v1/curation.schema.json",
+  "title": "TablePro integrations curation files",
+  "description": "Maintainer-owned files in curation/. Each file matches exactly one $defs entry, chosen by file name.",
+  "oneOf": [
+    { "$ref": "#/$defs/officialPublishers" },
+    { "$ref": "#/$defs/partners" },
+    { "$ref": "#/$defs/reserved" },
+    { "$ref": "#/$defs/removed" },
+    { "$ref": "#/$defs/protectedMarks" },
+    { "$ref": "#/$defs/scanAllowlist" }
+  ],
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 40 },
+    "githubLogin": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^20[2-9][0-9]-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$"
+    },
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 300,
+      "pattern": "^https://(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\\.)+[A-Za-z]{2,63}(?:[/?#][^\\s<>\"'\\\\]*)?$"
+    },
+    "plainLine": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^(?=\\S)(?!.*\\s$)[^\\u0000-\\u001F\\u007F<>]+$"
+    },
+    "officialPublishers": {
+      "description": "curation/official-publishers.json: GitHub accounts whose entries may use tier official.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$schema", "publishers"],
+      "properties": {
+        "$schema": { "const": "../schema/curation.schema.json" },
+        "publishers": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["github", "githubId", "name"],
+            "properties": {
+              "github": { "$ref": "#/$defs/githubLogin" },
+              "githubId": { "type": "integer", "minimum": 1 },
+              "name": { "$ref": "#/$defs/plainLine" }
+            }
+          }
+        }
+      }
+    },
+    "partners": {
+      "description": "curation/partners.json: vendors verified for tier partner, one row per entry.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$schema", "partners"],
+      "properties": {
+        "$schema": { "const": "../schema/curation.schema.json" },
+        "partners": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["slug", "github", "githubId", "domain", "method", "verifiedAt", "evidence"],
+            "properties": {
+              "slug": { "$ref": "#/$defs/slug" },
+              "github": { "$ref": "#/$defs/githubLogin" },
+              "githubId": { "type": "integer", "minimum": 1 },
+              "domain": {
+                "type": "string",
+                "pattern": "^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$"
+              },
+              "method": {
+                "description": "github-verified-org: the GitHub org shows the domain as verified. dns-txt: a TXT record on the domain holds the token from the verification issue.",
+                "enum": ["github-verified-org", "dns-txt"]
+              },
+              "verifiedAt": { "$ref": "#/$defs/date" },
+              "evidence": { "$ref": "#/$defs/httpsUrl" }
+            }
+          }
+        }
+      }
+    },
+    "reserved": {
+      "description": "curation/reserved.json: slugs and names no third-party entry may use.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$schema", "slugs", "names", "nameFragments"],
+      "properties": {
+        "$schema": { "const": "../schema/curation.schema.json" },
+        "slugs": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/slug" } },
+        "names": {
+          "description": "Compared after NFKC, casefold and removing spaces and punctuation.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/plainLine" }
+        },
+        "nameFragments": {
+          "description": "Fragments that may not appear in a third-party slug or name, compared the same way.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z0-9]{3,40}$" }
+        }
+      }
+    },
+    "removed": {
+      "description": "curation/removed.json: tombstones. A removed slug cannot be reused.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$schema", "removed"],
+      "properties": {
+        "$schema": { "const": "../schema/curation.schema.json" },
+        "removed": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["slug", "name", "removedAt", "reason", "link"],
+            "properties": {
+              "slug": { "$ref": "#/$defs/slug" },
+              "name": { "$ref": "#/$defs/plainLine" },
+              "removedAt": { "$ref": "#/$defs/date" },
+              "reason": {
+                "enum": [
+                  "author-request",
+                  "unmaintained",
+                  "broken",
+                  "private-files",
+                  "brand",
+                  "license",
+                  "security",
+                  "malicious",
+                  "impersonation",
+                  "duplicate",
+                  "superseded"
+                ]
+              },
+              "link": { "$ref": "#/$defs/httpsUrl" },
+              "publisherGithubId": { "type": "integer", "minimum": 1 }
+            }
+          }
+        }
+      }
+    },
+    "protectedMarks": {
+      "description": "curation/protected-marks.json: perceptual hashes of TablePro icons. A third-party icon this close is rejected.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$schema", "algorithm", "maxDistance", "marks"],
+      "properties": {
+        "$schema": { "const": "../schema/curation.schema.json" },
+        "algorithm": { "const": "dhash16-alphabox" },
+        "maxDistance": { "type": "integer", "minimum": 0, "maximum": 128 },
+        "marks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "hash", "source"],
+            "properties": {
+              "id": { "$ref": "#/$defs/slug" },
+              "hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "source": { "$ref": "#/$defs/plainLine" }
+            }
+          }
+        }
+      }
+    },
+    "scanAllowlist": {
+      "description": "curation/scan-allowlist.json: source-scan hits a maintainer reviewed and accepted, such as a comment that names a private file.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$schema", "allow"],
+      "properties": {
+        "$schema": { "const": "../schema/curation.schema.json" },
+        "allow": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["slug", "file", "rule", "reason"],
+            "properties": {
+              "slug": { "$ref": "#/$defs/slug" },
+              "file": { "type": "string", "maxLength": 300, "pattern": "^[^\\u0000-\\u001F]+$" },
+              "rule": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+              "reason": { "$ref": "#/$defs/plainLine" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

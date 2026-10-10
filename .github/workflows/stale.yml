@@ -1,0 +1,35 @@
+name: Stale
+
+on:
+  schedule:
+    - cron: "41 3 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: stale
+
+jobs:
+  stale:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      actions: write
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93 # v11.0.0
+        with:
+          days-before-issue-stale: -1
+          days-before-issue-close: -1
+          only-pr-labels: waiting on author
+          days-before-pr-stale: 14
+          days-before-pr-close: 7
+          stale-pr-label: stale
+          remove-pr-stale-when-updated: true
+          operations-per-run: 100
+          stale-pr-message: >
+            No reply for 14 days. This pull request closes in 7 days unless you push a change or comment.
+          close-pr-message: >
+            Closed after 21 days without a reply. Open a new pull request when you are ready.

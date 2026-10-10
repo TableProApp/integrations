@@ -1,0 +1,72 @@
+{
+  "$schema": "../../schema/integration.schema.json",
+  "schemaVersion": 1,
+  "slug": "claude-code",
+  "name": "Claude Code",
+  "summary": "Connect Claude Code to your databases with one claude mcp add command.",
+  "description": "Run claude mcp add with the path to the tablepro-mcp bridge inside TablePro, and Claude Code gets TablePro's MCP tools: list connections, read schemas, run queries and write data, within what each connection allows external clients to do.\n\nThe Connect a Client sheet in TablePro's settings shows the exact command for your install.",
+  "tier": "official",
+  "status": {
+    "state": "active"
+  },
+  "publisher": {
+    "name": "TablePro",
+    "github": "TableProApp",
+    "githubId": 260450047,
+    "url": "https://tablepro.app"
+  },
+  "source": {
+    "type": "github",
+    "repo": "TableProApp/TablePro",
+    "repoId": 1117891044,
+    "path": "TablePro/Core/MCP"
+  },
+  "license": "AGPL-3.0-only",
+  "install": {
+    "type": "built-in",
+    "docs": "https://docs.tablepro.app/integrations/mcp-clients#claude-code"
+  },
+  "host": {
+    "name": "Claude Code",
+    "url": "https://claude.com/product/claude-code"
+  },
+  "platforms": [
+    "macos"
+  ],
+  "categories": [
+    "ai-clients"
+  ],
+  "surfaces": [
+    "mcp"
+  ],
+  "disclosures": {
+    "reads": [
+      "connections",
+      "schema",
+      "data"
+    ],
+    "writes": [
+      "data"
+    ],
+    "accessNote": "The bundled bridge uses a Read & write token. Each connection's External Clients level and Safe Mode still apply.",
+    "lowersSafeMode": false,
+    "network": "internet",
+    "networkNote": "Claude Code sends query results to Anthropic to answer you.",
+    "account": false,
+    "payment": "free"
+  },
+  "links": {
+    "homepage": "https://docs.tablepro.app/integrations/mcp-clients#claude-code",
+    "docs": "https://docs.tablepro.app/developers/mcp-tools",
+    "issues": "https://github.com/TableProApp/TablePro/issues"
+  },
+  "icon": "icon.png",
+  "keywords": [
+    "mcp",
+    "claude",
+    "anthropic",
+    "terminal"
+  ],
+  "addedAt": "2026-10-10",
+  "lastVerifiedAt": "2026-10-10"
+}
