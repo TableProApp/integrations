@@ -13,7 +13,7 @@ A listing says the integration works with TablePro and meets this policy when it
 | Label | Meaning |
 | --- | --- |
 | Official | Built and maintained by TablePro. |
-| Partner | Built by the company that makes the other product, verified by its GitHub organization or a DNS record on its domain. Only a maintainer assigns it. |
+| Partner | Built by the company that makes the other product, confirmed through its GitHub organization or a DNS record on its domain. Only a maintainer assigns it. |
 | Community | Built by anyone else. |
 
 Archived is a status, not a label. Every entry shows **By &lt;publisher&gt;**.
