@@ -13,7 +13,7 @@ To list your integration, read [CONTRIBUTING.md](CONTRIBUTING.md).
 | `integrations/<slug>/` | `integration.json`, `icon.png`, optional `screenshot-1.png` to `screenshot-4.png` |
 | `schema/` | JSON Schema 2020-12 for manifests, curation files and the published index |
 | `curation/` | Maintainer files: official publishers, partners, reserved names, removed entries, protected icons, accepted scan hits |
-| `scripts/` | `validate.py`, the shared `registry.py`, and their tests |
+| `scripts/` | `validate.py`, `build.py` (the published data), `health.py` (the weekly check), the shared `registry.py`, and their tests |
 | `_owner/` | Repository settings and rulesets, applied once by an org owner |
 
 ## License

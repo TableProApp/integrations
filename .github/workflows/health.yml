@@ -1,0 +1,81 @@
+name: Health
+
+on:
+  schedule:
+    - cron: "23 6 * * 1"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: health
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check entries
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    outputs:
+      findings: ${{ steps.check.outputs.findings }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.14"
+      - run: python -m pip install --require-hashes -r requirements.txt
+      - name: Check every active entry
+        id: check
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/health.py --scan-sources --out build/health.md
+          if [ -s build/health.md ]; then
+            echo "findings=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "findings=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: steps.check.outputs.findings == 'true'
+        with:
+          name: health
+          path: build/health.md
+          if-no-files-found: error
+          retention-days: 7
+
+  issue:
+    name: Update the health issue
+    needs: check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        if: needs.check.outputs.findings == 'true'
+        with:
+          name: health
+          path: ${{ runner.temp }}/health
+      - name: Create, update or close the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FINDINGS: ${{ needs.check.outputs.findings }}
+          REPORT: ${{ runner.temp }}/health/health.md
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --label health --author "github-actions[bot]" --state open \
+            --json number --jq '.[0].number // empty')
+          if [ "$FINDINGS" = "true" ]; then
+            printf '\n[Workflow run](%s)\n' "$RUN_URL" >> "$REPORT"
+            if [ -n "$number" ]; then
+              gh issue edit "$number" --repo "$GITHUB_REPOSITORY" --body-file "$REPORT"
+            else
+              gh issue create --repo "$GITHUB_REPOSITORY" --title "Weekly health check" --label health --body-file "$REPORT"
+            fi
+          elif [ -n "$number" ]; then
+            gh issue close "$number" --repo "$GITHUB_REPOSITORY" --comment "Every active entry passed the check in $RUN_URL."
+          fi
