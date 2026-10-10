@@ -1,0 +1,6 @@
+{
+  "$schema": "../schema/curation.schema.json",
+  "publishers": [
+    { "github": "TableProApp", "githubId": 260450047, "name": "TablePro" }
+  ]
+}

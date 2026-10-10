@@ -1,0 +1,41 @@
+name: Suggest an integration
+description: Tell us about an integration that should be listed. Its author can also open a pull request.
+labels: ["suggestion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Authors: a pull request is faster. See CONTRIBUTING.md.
+        Everyone else: we ask the author before listing anything.
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      placeholder: DDEV Manager
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Link
+      description: Store page, repository or homepage.
+      placeholder: https://
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What it does with TablePro
+      description: One or two sentences.
+    validations:
+      required: true
+  - type: dropdown
+    id: relation
+    attributes:
+      label: Who are you
+      options:
+        - I made it
+        - I work for the company that makes it
+        - I use it
+    validations:
+      required: true

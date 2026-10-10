@@ -1,0 +1,39 @@
+{
+  "$schema": "../schema/curation.schema.json",
+  "slugs": [
+    "about",
+    "admin",
+    "api",
+    "archived",
+    "brand",
+    "categories",
+    "category",
+    "community",
+    "docs",
+    "images",
+    "index",
+    "integrations",
+    "new",
+    "official",
+    "partner",
+    "partners",
+    "platform",
+    "schema",
+    "search",
+    "settings",
+    "submit",
+    "tier",
+    "v1",
+    "v2"
+  ],
+  "names": [
+    "TablePro",
+    "Official",
+    "Verified",
+    "Certified"
+  ],
+  "nameFragments": [
+    "tablepro",
+    "tableproapp"
+  ]
+}

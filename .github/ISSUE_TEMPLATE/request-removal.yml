@@ -1,0 +1,32 @@
+name: Request removal or archive
+description: For publishers who want their entry archived or removed.
+labels: ["removal request"]
+body:
+  - type: input
+    id: slug
+    attributes:
+      label: Entry
+      description: The last part of the entry's URL.
+    validations:
+      required: true
+  - type: dropdown
+    id: action
+    attributes:
+      label: What should happen
+      options:
+        - Archive it. The page stays with a notice
+        - Remove it. The page answers 410 Gone
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason
+      description: Optional.
+  - type: checkboxes
+    id: owner
+    attributes:
+      label: Ownership
+      options:
+        - label: I am the publisher shown on the entry, or I can act for them. A maintainer checks this against the GitHub account on the entry.
+          required: true

@@ -1,0 +1,11 @@
+{
+  "$schema": "../schema/curation.schema.json",
+  "algorithm": "dhash16-alphabox",
+  "maxDistance": 40,
+  "marks": [
+    { "id": "app-icon", "hash": "ff00d0f4871ade0c98648f0c8f0c88ac807c98e48f0c80ecce0ca07ad0e4fc00", "source": "TablePro app icon, default appearance" },
+    { "id": "app-icon-dark", "hash": "ff80d0f4a71adf0c98e48f0c8f0c884c807c98e48f0c806ccf0ca0fad0e4fc00", "source": "TablePro app icon, dark appearance" },
+    { "id": "app-icon-tinted", "hash": "ffc0d0f4a71a9e0c98a48f0c8f0c884c807c98e48f0c806c8c0ea07ad0ecf800", "source": "TablePro app icon, tinted appearance" },
+    { "id": "app-icon-padded", "hash": "7f00d0f4871ade0c98648f0c8f0c88ac807c98e48f0c80ecce0ca07ad0e4fc00", "source": "TablePro app icon on the macOS icon grid" }
+  ]
+}

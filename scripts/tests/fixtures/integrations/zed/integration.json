@@ -1,0 +1,72 @@
+{
+  "$schema": "../../schema/integration.schema.json",
+  "schemaVersion": 1,
+  "slug": "zed",
+  "name": "Zed",
+  "summary": "Add TablePro as a context server in Zed's agent panel to query your databases.",
+  "description": "Add TablePro to Zed's context servers with the path to the tablepro-mcp bridge inside the app. Zed's agent can then list connections, read schemas, run queries and write data, within what each connection allows external clients to do.\n\nThe Connect a Client sheet in TablePro's settings shows the steps.",
+  "tier": "official",
+  "status": {
+    "state": "active"
+  },
+  "publisher": {
+    "name": "TablePro",
+    "github": "TableProApp",
+    "githubId": 260450047,
+    "url": "https://tablepro.app"
+  },
+  "source": {
+    "type": "github",
+    "repo": "TableProApp/TablePro",
+    "repoId": 1117891044,
+    "path": "TablePro/Core/MCP"
+  },
+  "license": "AGPL-3.0-only",
+  "install": {
+    "type": "built-in",
+    "docs": "https://docs.tablepro.app/integrations/mcp-clients#zed"
+  },
+  "host": {
+    "name": "Zed",
+    "url": "https://zed.dev"
+  },
+  "platforms": [
+    "macos"
+  ],
+  "categories": [
+    "ai-clients"
+  ],
+  "surfaces": [
+    "mcp"
+  ],
+  "disclosures": {
+    "reads": [
+      "connections",
+      "schema",
+      "data"
+    ],
+    "writes": [
+      "data"
+    ],
+    "accessNote": "The bundled bridge uses a Read & write token. Each connection's External Clients level and Safe Mode still apply.",
+    "lowersSafeMode": false,
+    "network": "internet",
+    "networkNote": "Zed sends query results to the language model provider you set up.",
+    "account": false,
+    "payment": "free"
+  },
+  "links": {
+    "homepage": "https://docs.tablepro.app/integrations/mcp-clients#zed",
+    "docs": "https://docs.tablepro.app/developers/mcp-tools",
+    "issues": "https://github.com/TableProApp/TablePro/issues"
+  },
+  "icon": "icon.png",
+  "keywords": [
+    "mcp",
+    "agent",
+    "editor",
+    "ai"
+  ],
+  "addedAt": "2026-10-10",
+  "lastVerifiedAt": "2026-10-10"
+}

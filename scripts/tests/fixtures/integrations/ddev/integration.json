@@ -1,0 +1,68 @@
+{
+  "$schema": "../../schema/integration.schema.json",
+  "schemaVersion": 1,
+  "slug": "ddev",
+  "name": "DDEV",
+  "summary": "Open the database of a DDEV project in TablePro with ddev tablepro.",
+  "description": "DDEV ships a tablepro command on macOS. Run ddev tablepro in a project folder: DDEV starts the project if it is stopped, then opens its MySQL, MariaDB or PostgreSQL database in TablePro as a connection named after the site.\n\nThe command passes DDEV's default database user and password in a connection URL and targets TablePro by bundle ID. Nothing is saved unless you save the connection in TablePro.",
+  "tier": "community",
+  "status": {
+    "state": "active"
+  },
+  "publisher": {
+    "name": "DDEV",
+    "github": "ddev",
+    "githubId": 595986,
+    "url": "https://ddev.com"
+  },
+  "source": {
+    "type": "github",
+    "repo": "ddev/ddev",
+    "repoId": 80669528,
+    "path": "pkg/ddevapp/global_dotddev_assets/commands/host/tablepro"
+  },
+  "license": "Apache-2.0",
+  "install": {
+    "type": "ships-with-host",
+    "url": "https://docs.ddev.com/en/stable/users/usage/database-management/#database-guis"
+  },
+  "host": {
+    "name": "DDEV",
+    "url": "https://ddev.com",
+    "minVersion": "1.25.4"
+  },
+  "platforms": [
+    "macos"
+  ],
+  "categories": [
+    "local-development",
+    "command-line"
+  ],
+  "surfaces": [
+    "database-url"
+  ],
+  "disclosures": {
+    "reads": [],
+    "writes": [],
+    "lowersSafeMode": false,
+    "network": "none",
+    "account": false,
+    "payment": "free"
+  },
+  "links": {
+    "homepage": "https://ddev.com",
+    "docs": "https://docs.ddev.com/en/stable/users/usage/database-management/#database-guis",
+    "issues": "https://github.com/ddev/ddev/issues"
+  },
+  "icon": "icon.png",
+  "keywords": [
+    "docker",
+    "php",
+    "wordpress",
+    "drupal",
+    "mysql",
+    "postgresql"
+  ],
+  "addedAt": "2026-10-10",
+  "lastVerifiedAt": "2026-10-10"
+}

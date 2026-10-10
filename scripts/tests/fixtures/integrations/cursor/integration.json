@@ -1,0 +1,72 @@
+{
+  "$schema": "../../schema/integration.schema.json",
+  "schemaVersion": 1,
+  "slug": "cursor",
+  "name": "Cursor",
+  "summary": "Let Cursor's agent read and query your databases through the MCP server in TablePro.",
+  "description": "Add TablePro to Cursor's MCP config with one entry that points at the tablepro-mcp bridge inside the app. Cursor's agent can then list connections, read schemas, run queries and write data, within what each connection allows external clients to do.\n\nUse the global config in your home folder, or a project config to scope it to one project. The Connect a Client sheet in TablePro's settings shows the steps.",
+  "tier": "official",
+  "status": {
+    "state": "active"
+  },
+  "publisher": {
+    "name": "TablePro",
+    "github": "TableProApp",
+    "githubId": 260450047,
+    "url": "https://tablepro.app"
+  },
+  "source": {
+    "type": "github",
+    "repo": "TableProApp/TablePro",
+    "repoId": 1117891044,
+    "path": "TablePro/Core/MCP"
+  },
+  "license": "AGPL-3.0-only",
+  "install": {
+    "type": "built-in",
+    "docs": "https://docs.tablepro.app/integrations/mcp-clients#clients-that-take-the-json-above"
+  },
+  "host": {
+    "name": "Cursor",
+    "url": "https://cursor.com"
+  },
+  "platforms": [
+    "macos"
+  ],
+  "categories": [
+    "ai-clients"
+  ],
+  "surfaces": [
+    "mcp"
+  ],
+  "disclosures": {
+    "reads": [
+      "connections",
+      "schema",
+      "data"
+    ],
+    "writes": [
+      "data"
+    ],
+    "accessNote": "The bundled bridge uses a Read & write token. Each connection's External Clients level and Safe Mode still apply.",
+    "lowersSafeMode": false,
+    "network": "internet",
+    "networkNote": "Cursor sends query results to the model provider it uses.",
+    "account": false,
+    "payment": "free"
+  },
+  "links": {
+    "homepage": "https://docs.tablepro.app/integrations/mcp-clients#clients-that-take-the-json-above",
+    "docs": "https://docs.tablepro.app/developers/mcp-tools",
+    "issues": "https://github.com/TableProApp/TablePro/issues"
+  },
+  "icon": "icon.png",
+  "keywords": [
+    "mcp",
+    "agent",
+    "editor",
+    "ai"
+  ],
+  "addedAt": "2026-10-10",
+  "lastVerifiedAt": "2026-10-10"
+}
