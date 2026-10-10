@@ -1,0 +1,78 @@
+{
+  "$schema": "../../schema/integration.schema.json",
+  "schemaVersion": 1,
+  "slug": "localwp",
+  "name": "Local",
+  "summary": "Open the MySQL database of a running Local WordPress site in TablePro.",
+  "description": "A Local add-on that adds a button to the Database tab of a running site. It reads the site's database name, user and password from Local, forwards a port on 127.0.0.1 to the site's MySQL socket, and opens a mysql:// URL for that port in TablePro.\n\nInstall the .tgz from the latest release in Local under Add-ons, Installed, Install from Disk. Needs Local 10 or later.",
+  "tier": "community",
+  "status": {
+    "state": "active"
+  },
+  "publisher": {
+    "name": "Mario Peischl",
+    "github": "electricarts",
+    "githubId": 625286,
+    "url": "https://electricarts.de"
+  },
+  "source": {
+    "type": "github",
+    "repo": "electricarts/local-tablepro",
+    "repoId": 1309032022
+  },
+  "license": "MIT",
+  "install": {
+    "type": "github-release",
+    "url": "https://github.com/electricarts/local-tablepro/releases/latest"
+  },
+  "host": {
+    "name": "Local",
+    "url": "https://localwp.com",
+    "minVersion": "10.0"
+  },
+  "minTableProVersion": {
+    "macos": "0.37.0"
+  },
+  "platforms": [
+    "macos"
+  ],
+  "categories": [
+    "local-development"
+  ],
+  "surfaces": [
+    "database-url"
+  ],
+  "disclosures": {
+    "reads": [],
+    "writes": [],
+    "lowersSafeMode": true,
+    "safeModeNote": "Opens site databases with safeModeLevel=0 (Silent), so no query asks for confirmation.",
+    "network": "local",
+    "networkNote": "Opens a port on 127.0.0.1 until the site stops.",
+    "account": false,
+    "payment": "free"
+  },
+  "links": {
+    "homepage": "https://github.com/electricarts/local-tablepro",
+    "issues": "https://github.com/electricarts/local-tablepro/issues"
+  },
+  "icon": "icon.png",
+  "keywords": [
+    "wordpress",
+    "mysql",
+    "localwp"
+  ],
+  "addedAt": "2026-10-10",
+  "lastVerifiedAt": "2026-10-10",
+  "compliance": {
+    "grace": {
+      "startedAt": "2026-10-10",
+      "endsAt": "2026-12-09",
+      "items": [
+        "brand-name",
+        "brand-icon"
+      ],
+      "tracking": "https://github.com/electricarts/local-tablepro/issues/10"
+    }
+  }
+}
