@@ -19,7 +19,7 @@
     "type": "github",
     "repo": "TableProApp/TablePro",
     "repoId": 1117891044,
-    "path": "TablePro/Core/MCP"
+    "path": "apple/TablePro/Core/MCP"
   },
   "license": "AGPL-3.0-only",
   "install": {
