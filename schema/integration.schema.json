@@ -159,9 +159,10 @@
       "additionalProperties": false,
       "minProperties": 1,
       "properties": {
-        "macos": { "$ref": "#/$defs/version" },
-        "ios": { "$ref": "#/$defs/version" },
-        "ipados": { "$ref": "#/$defs/version" }
+        "macos": { "$ref": "#/$defs/appVersion" },
+        "linux": { "$ref": "#/$defs/appVersion" },
+        "ios": { "$ref": "#/$defs/appVersion" },
+        "ipados": { "$ref": "#/$defs/appVersion" }
       }
     },
     "platforms": {
@@ -169,7 +170,7 @@
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": { "enum": ["macos", "ios", "ipados"] }
+      "items": { "enum": ["macos", "linux", "ios", "ipados"] }
     },
     "categories": {
       "type": "array",
@@ -309,6 +310,11 @@
     "version": {
       "type": "string",
       "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:\\.(?:0|[1-9][0-9]*))?$"
+    },
+    "appVersion": {
+      "description": "A TablePro release. TablePro for Linux ships betas before 0.1.0, such as 0.1.0-beta.1.",
+      "type": "string",
+      "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:\\.(?:0|[1-9][0-9]*))?(?:-(?:alpha|beta|rc)\\.(?:0|[1-9][0-9]*))?$"
     },
     "statusActive": {
       "type": "object",
@@ -515,7 +521,7 @@
         },
         "safeModeNote": { "allOf": [{ "$ref": "#/$defs/plainLine" }], "maxLength": 200 },
         "network": {
-          "description": "Where the integration itself sends data, besides TablePro and the user's databases. local means this Mac only.",
+          "description": "Where the integration itself sends data, besides TablePro and the user's databases. local means this computer only.",
           "enum": ["none", "local", "internet"]
         },
         "networkNote": { "allOf": [{ "$ref": "#/$defs/plainLine" }], "maxLength": 200 },

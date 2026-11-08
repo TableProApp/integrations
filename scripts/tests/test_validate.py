@@ -341,6 +341,16 @@ class SemanticTests(RepoCase):
         self.edit("localwp", lambda d: d["compliance"]["grace"].update(endsAt="2026-10-01"))
         self.assertError(self.run_validator(), "must be after startedAt")
 
+    def test_linux_with_a_beta_version(self):
+        self.edit("command-line", lambda d: d.update(platforms=["macos", "linux"],
+                                                     minTableProVersion={"macos": "0.37.0", "linux": "0.1.0-beta.1"}))
+        self.assertEqual([f.message for f in self.run_validator().report.errors], [])
+
+    def test_app_version_takes_only_a_numbered_pre_release(self):
+        self.edit("command-line", lambda d: d.update(platforms=["macos", "linux"],
+                                                     minTableProVersion={"linux": "0.1.0-beta"}))
+        self.assertTrue(self.run_validator().report.errors)
+
     def test_min_version_for_unlisted_platform(self):
         self.edit("command-line", lambda d: d.update(minTableProVersion={"ios": "1.0"}))
         self.assertError(self.run_validator(), "ios is not in platforms")

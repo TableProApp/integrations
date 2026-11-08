@@ -4,7 +4,7 @@
   "slug": "claude-code",
   "name": "Claude Code",
   "summary": "Connect Claude Code to your databases through the MCP server built into TablePro.",
-  "description": "Claude Code runs the bundled tablepro-mcp bridge as a local MCP server. Setup is one claude mcp add command.",
+  "description": "On a Mac, Claude Code runs the bundled tablepro-mcp bridge as a local MCP server. On Linux, it connects to TablePro's MCP server over HTTP on 127.0.0.1 with an access token. Setup is one claude mcp add command.",
   "tier": "official",
   "status": {
     "state": "active"
@@ -31,10 +31,12 @@
     "url": "https://claude.com/product/claude-code"
   },
   "minTableProVersion": {
-    "macos": "0.37.0"
+    "macos": "0.37.0",
+    "linux": "0.1.0-beta.1"
   },
   "platforms": [
-    "macos"
+    "macos",
+    "linux"
   ],
   "categories": [
     "ai-clients",
@@ -53,7 +55,7 @@
       "data",
       "schema"
     ],
-    "accessNote": "Uses the Read & Write token of the bundled bridge. Each connection's External Clients level and Safe Mode still apply.",
+    "accessNote": "On a Mac it uses the Read & Write token of the bundled bridge, on Linux the access token from the MCP page of Preferences. Each connection's External Clients level and Safe Mode still apply.",
     "lowersSafeMode": false,
     "network": "internet",
     "networkNote": "Claude Code sends tool results, such as connection names, schemas and rows, to its model provider.",
@@ -74,5 +76,5 @@
     "ai"
   ],
   "addedAt": "2026-10-10",
-  "lastVerifiedAt": "2026-10-10"
+  "lastVerifiedAt": "2026-11-08"
 }

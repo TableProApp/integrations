@@ -1,6 +1,6 @@
 # Listing policy
 
-Version 1, effective 2026-10-10.
+Version 2, effective 2026-11-08.
 
 This policy decides what appears in the TablePro integration directory at [tablepro.app/integrations](https://tablepro.app/integrations) and in this repository's published data.
 
@@ -28,7 +28,7 @@ An integration uses only the interfaces in the [developer docs](https://docs.tab
 
 It never reads, writes or deletes TablePro's private files: `connections.json`, `com.TablePro.plist`, `mcp-handshake.json`, TablePro's Keychain items or its SQLite databases. There is no exception and no grace period for new entries. CI scans open-source entries for these paths.
 
-It finds TablePro by bundle identifier `com.TablePro`, not by a fixed install path.
+It finds TablePro by bundle identifier `com.TablePro` on a Mac and app ID `app.tablepro.TablePro` on Linux, not by a fixed install path.
 
 ## 5. License and source
 
@@ -40,7 +40,7 @@ There is no minimum number of stars, installs or downloads.
 
 ## 6. Safety settings
 
-An integration may open connections with Safe Mode below the user's default only for local development environments, such as `safeModeLevel=0` for a database on the same Mac. The entry discloses it, and the directory shows it on the entry page.
+An integration may open connections with Safe Mode below the user's default only for local development environments, such as `safeModeLevel=0` for a database on the same computer. The entry discloses it, and the directory shows it on the entry page.
 
 ## 7. Disclosures
 
@@ -48,7 +48,7 @@ Every entry states:
 
 - what it reads from TablePro (connection list, schema, row data) and what it writes (data, schema);
 - whether it lowers Safe Mode;
-- where it sends data: nowhere, this Mac only, or the internet, and to whom;
+- where it sends data: nowhere, this computer only, or the internet, and to whom;
 - whether it needs an account with another service, with a privacy policy link;
 - whether it is free, has optional payment, or is paid.
 
